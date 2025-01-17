@@ -44,11 +44,15 @@ public class Player : MonoBehaviour
             if (hit.collider != null) {
                 rigidBody.gravityScale = 0;
                 rigidBody.linearVelocity = Vector2.zero;
+                transform.SetParent(hit.collider.transform);
             }
         }
 
         if (Input.GetKeyUp(KeyCode.Z) && rigidBody.gravityScale == 0) {
             rigidBody.gravityScale = 1;
+            if (transform.parent != null) {
+                transform.SetParent(null);
+            }
         }
     }
 
@@ -56,13 +60,13 @@ public class Player : MonoBehaviour
         Vector2 direction = Vector2.zero;
         
         if (angle <= 10 && angle >= -10) direction = new Vector2(1, 0);
-        else if (angle < 80 && angle > 10) direction = new Vector2(.5f, .8f);
+        else if (angle < 80 && angle > 10) direction = new Vector2(.5f, .9f);
         else if (angle <= 100 && angle >= 80) direction = new Vector2(0, 1);
-        else if (angle < 170 && angle > 100) direction = new Vector2(-.5f, .8f);
+        else if (angle < 170 && angle > 100) direction = new Vector2(-.5f, .9f);
         else if (angle <= -170 || angle >= 170) direction = new Vector2(-1, 0);
-        else if (angle < -100 && angle > -170) direction = new Vector2(-.5f, -.8f);
+        else if (angle < -100 && angle > -170) direction = new Vector2(-.5f, -.9f);
         else if (angle <= -80 && angle >= -100) direction = new Vector2(0, -1);
-        else if (angle <= -10 && angle >= -80) direction = new Vector2(.5f, -.8f);
+        else if (angle <= -10 && angle >= -80) direction = new Vector2(.5f, -.9f);
 
         return direction;
     }
