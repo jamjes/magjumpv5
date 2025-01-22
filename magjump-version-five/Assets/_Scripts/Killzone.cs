@@ -1,11 +1,15 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class Killzone : MonoBehaviour
 {
     public delegate void CollisionEvent();
     public static event CollisionEvent OnPlayerDeath;
+
+    private AudioSource src;
+
+    private void Awake() {
+        src = GetComponent<AudioSource>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag == "Player") {
@@ -14,12 +18,8 @@ public class Killzone : MonoBehaviour
             }
 
             OnPlayerDeath();
+            src.Play();
         }
-    }
-
-    private IEnumerator DelayScene(int sceneIndex) {
-        yield return new WaitForSeconds(.3f);
-        SceneManager.LoadScene(sceneIndex);
     }
 }
 

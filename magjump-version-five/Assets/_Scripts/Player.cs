@@ -11,6 +11,12 @@ public class Player : MonoBehaviour
     private float groundTimeRef;
     [SerializeField] private BoxCollider2D boxColl;
 
+    public delegate void SoundEvent(AudioClip target);
+    public static event SoundEvent OnTrigger;
+    public static event SoundEvent OnStop;
+    [SerializeField] private AudioClip impactClip;
+    [SerializeField] private AudioClip magnetClip;
+
     private void Start() {
         groundTimeRef = Time.time;
     }
@@ -38,6 +44,13 @@ public class Player : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.X) && rigidBody.gravityScale == 0) { //When player released magnetic key
             rigidBody.gravityScale = 1;
             transform.SetParent(null); //Detach from platform
+            
+        }
+
+        if (Input.GetKeyUp(KeyCode.X)) {
+            if (OnStop != null) {
+                OnStop(magnetClip);
+            }
         }
 
         bool isGrounded = GroundCheck();
@@ -47,6 +60,9 @@ public class Player : MonoBehaviour
             groundTimeRef = Time.time;
             if (groundTimeRef - lastGroundTime > .3f) { //Player has been airbourne for more than .3 seconds
                 shake.start = true;
+                if (OnTrigger != null) {
+                    OnTrigger(impactClip);
+                }
             }
         }
     }
@@ -72,6 +88,9 @@ public class Player : MonoBehaviour
         Vector2 velocity = direction * impulseMode * power;
         rigidBody.linearVelocity = velocity;
         shake.start = true;
+        if (OnTrigger != null) {
+            OnTrigger(magnetClip);
+        }
     }
 
     private bool GroundCheck() {
