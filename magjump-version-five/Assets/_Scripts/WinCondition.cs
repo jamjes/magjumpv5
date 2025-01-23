@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class WinCondition : MonoBehaviour
 {
     BoxCollider2D coll;
+    public delegate void WinConditionEvent();
+    public static event WinConditionEvent OnPlayerWin;
 
     private void Awake() {
         coll = GetComponent<BoxCollider2D>();
@@ -13,8 +15,8 @@ public class WinCondition : MonoBehaviour
         if (collision.collider.tag == "Player") {
             bool end = Landed();
 
-            if (end) {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            if (end && OnPlayerWin != null) {
+                OnPlayerWin();
             }
         }
     }

@@ -1024,7 +1024,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1366258295}
         m_TargetAssemblyTypeName: SceneTransitionHandler, Assembly-CSharp
-        m_MethodName: NextScene
+        m_MethodName: Trigger
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 640, y: 360}
+  m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

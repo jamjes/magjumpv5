@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour
 
     private void ResetAfterDeath() {
         deathCount++;
-        int index = SceneManager.GetActiveScene().buildIndex;
-        StartCoroutine(LoadSceneAfter(index, .75f));
+        //int index = SceneManager.GetActiveScene().buildIndex;
+        //StartCoroutine(LoadSceneAfter(index, .75f));
     }
 
     private IEnumerator LoadSceneAfter(int index, float delay) {
