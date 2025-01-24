@@ -22,6 +22,13 @@ public class Player : MonoBehaviour
     }
 
     private void Update() {
+        /*if (rigidBody.linearVelocityX > 0 && transform.rotation != Quaternion.Euler(0,0,0)) {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else if (rigidBody.linearVelocityX < 0 && transform.rotation != Quaternion.Euler(0,180,0)) {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }*/
+        
         Vector2 direction = pivotReference.GetDirection();
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, detectionRadius, platformLayer); //Player is within range to attract / repel
         

@@ -15,8 +15,11 @@ public class WinCondition : MonoBehaviour
         if (collision.collider.tag == "Player") {
             bool end = Landed();
 
-            if (end && OnPlayerWin != null) {
-                OnPlayerWin();
+            if (end) {
+                Debug.Log("Win Condition Met");
+                if (OnPlayerWin != null) {
+                    OnPlayerWin();
+                }
             }
         }
     }

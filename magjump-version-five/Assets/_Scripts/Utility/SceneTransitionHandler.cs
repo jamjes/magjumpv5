@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SceneTransitionHandler : MonoBehaviour
 {
     private int currentIndex;
-    private float transitionDuration = .75f;
+    private float transitionDuration;
     private bool isFading = false;
     private float elapsedTime = 0;
     private Image fader;
@@ -28,6 +28,7 @@ public class SceneTransitionHandler : MonoBehaviour
 
     private void Start() {
         currentIndex = SceneManager.GetActiveScene().buildIndex;
+        transitionDuration = GameManager.instance.transitionDuration;
         Transition(-1);
     }
 
