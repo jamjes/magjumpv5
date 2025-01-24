@@ -1,30 +1,64 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private LayerMask platformLayer; //Reference to magentised platforms
-    [SerializeField] private Pivot pivotReference; //Reference to UI pointer
-    [SerializeField] private float detectionRadius; //Magnetic strength
-    [SerializeField] private float power; //Impulse force
+    [SerializeField] private LayerMask platformLayer;
+    [SerializeField] private Pivot pivotReference;
+    [SerializeField] private float detectionRadius;
+    [SerializeField] private float power;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Shake shake;
-    private float groundTimeRef;
     [SerializeField] private BoxCollider2D boxColl;
-
-    public delegate void SoundEvent(AudioClip target);
-    public static event SoundEvent OnTrigger;
-    public static event SoundEvent OnStop;
     [SerializeField] private AudioClip impactClip;
     [SerializeField] private AudioClip magnetClip;
 
-    private void Start() {
-        groundTimeRef = Time.time;
+    private float groundTimeRef;
+    public delegate void SoundEvent(AudioClip target);
+    public static event SoundEvent OnTrigger;
+    public static event SoundEvent OnStop;
+    bool run = false;
+
+    private void OnEnable() {
+        Killzone.OnPlayerDeath += StopLogic;
+        WinCondition.OnPlayerWin += StopLogic;
     }
 
+    private void OnDisable() {
+        Killzone.OnPlayerDeath -= StopLogic;
+        WinCondition.OnPlayerWin -= StopLogic;
+    }
+
+    private void StopLogic() {
+        run = false;
+    }
+
+    private void Start() {
+        groundTimeRef = Time.time;
+        StartCoroutine(DelayedStart());
+    }
+
+    private IEnumerator DelayedStart() {
+        yield return new WaitForSeconds(GameManager.instance.transitionDuration);
+        run = true;
+    }
+
+    
+
     private void Update() {
+        if (run == false) {
+            return;
+        }
+        
         Vector2 direction = pivotReference.GetDirection();
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, detectionRadius, platformLayer); //Player is within range to attract / repel
         
+        if (hit.collider != null) {
+            pivotReference.SetColor(Color.green);
+        } else {
+            pivotReference.ResetColor();
+        }
+
         if (Input.GetKeyDown(KeyCode.X) && hit.collider != null) {
             direction = ClampDirection(pivotReference.GetAngle());
             int impulseMode = direction.y < 0 ? -1 : 1; //If direction is down, repel, else, attract
@@ -67,7 +101,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    //8-Directional input clamp
     private Vector2 ClampDirection(float angle) { 
         Vector2 direction = Vector2.zero;
         
@@ -83,7 +116,6 @@ public class Player : MonoBehaviour
         return direction;
     }
 
-    //Apply movement
     private void Impulse(Vector2 direction, int impulseMode) {
         Vector2 velocity = direction * impulseMode * power;
         rigidBody.linearVelocity = velocity;

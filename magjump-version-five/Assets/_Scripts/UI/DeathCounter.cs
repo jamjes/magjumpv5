@@ -10,10 +10,6 @@ public class DeathCounter : MonoBehaviour
     }
 
     private void Start() {
-        UpdateUI();
-    }
-
-    void UpdateUI() {
         deathCount.text = GameManager.instance.deathCount.ToString();
     }
 }
