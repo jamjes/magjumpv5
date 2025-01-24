@@ -16,7 +16,6 @@ public class WinCondition : MonoBehaviour
             bool end = Landed();
 
             if (end) {
-                Debug.Log("Win Condition Met");
                 if (OnPlayerWin != null) {
                     OnPlayerWin();
                 }

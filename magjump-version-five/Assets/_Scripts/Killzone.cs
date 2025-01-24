@@ -13,7 +13,6 @@ public class Killzone : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag == "Player") {
-            Debug.Log("Kill Player");
             if (OnPlayerDeath == null) {
                 return;
             }

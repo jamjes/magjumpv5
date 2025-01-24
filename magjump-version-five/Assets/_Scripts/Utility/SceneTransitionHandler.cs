@@ -12,6 +12,9 @@ public class SceneTransitionHandler : MonoBehaviour
     private Image fader;
     private float start = 1, end = 0;
 
+    public delegate void SceneEvent();
+    public static event SceneEvent OnGameReset;
+
     private void OnEnable() {
         Killzone.OnPlayerDeath += ResetScene;
         WinCondition.OnPlayerWin += NextScene;
@@ -67,6 +70,9 @@ public class SceneTransitionHandler : MonoBehaviour
         int targetScene = SceneManager.GetActiveScene().buildIndex + direction;
         if (totalScenes <= targetScene) {
             targetScene = 0;
+            if (OnGameReset != null) {
+                OnGameReset();
+            }
         }
 
         if (direction != -1) {
