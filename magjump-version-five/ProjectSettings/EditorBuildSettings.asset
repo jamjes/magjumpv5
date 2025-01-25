@@ -14,6 +14,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/end.unity
     guid: fabbe4037c1269447af3cadeac117d32
+  - enabled: 1
+    path: Assets/Scenes/Level Blockout/bo_one.unity
+    guid: d7354c91aa72d3546ada0b442ac3e026
+  - enabled: 1
+    path: Assets/Scenes/Level Blockout/bo_two.unity
+    guid: 278d1bfb21e37dc45b8904a78f797b89
+  - enabled: 1
+    path: Assets/Scenes/Level Blockout/bo_three.unity
+    guid: c86621c390ccf2745bdd137df384a34d
+  - enabled: 1
+    path: Assets/Scenes/Level Blockout/bo_four.unity
+    guid: 7881d7b49e082ef4fa96a1160b846950
+  - enabled: 1
+    path: Assets/Scenes/Level Blockout/bo_five.unity
+    guid: d9a06eea4af5a6747aed9585d4d5f106
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
