@@ -2,61 +2,50 @@ using UnityEngine;
 
 public class Powered : MonoBehaviour, IPowerable
 {
-    bool powered = false;
+    private bool powered;
     [SerializeField] private float speed;
-    [SerializeField] Transform target;
-    Vector3 homePosition;
     [SerializeField] private GameObject platform;
-    bool end = false;
-
     public Transform[] WayPoints;
-    public int targetIndex = 1;
+    private int targetIndex;
+    private Color originalColor;
+    public Color activeColor;
 
     private void Start() {
-        homePosition = platform.transform.position;
+        platform.transform.position = WayPoints[0].position;
+        powered = false;
+        targetIndex = 0;
+        originalColor = platform.GetComponent<SpriteRenderer>().color;
     }
 
     private void Update() {
         if (powered == true) {
-            if (platform.transform.position == WayPoints[WayPoints.Length - 1].position) {
-                return;
-            }
-            
-            platform.transform.position = Vector3.MoveTowards(platform.transform.position, WayPoints[targetIndex].position, speed * Time.deltaTime);
-            if (platform.transform.position == WayPoints[targetIndex].position) {
-                targetIndex++;
-                if (targetIndex == WayPoints.Length) {
-                    end = true;
+            if (platform.transform.position != WayPoints[WayPoints.Length - 1].position) {
+                if (platform.transform.position == WayPoints[targetIndex].position) {
+                    targetIndex++;
+                    return;
                 }
+                platform.transform.position = Vector3.MoveTowards(platform.transform.position, WayPoints[targetIndex].position, speed * Time.deltaTime);
             }
-
-            //platform.transform.position = Vector3.MoveTowards(platform.transform.position, target.position, speed * Time.deltaTime);
         } else {
-            if (platform.transform.position == WayPoints[0].position) {
-                return;
-            }
-
-            platform.transform.position = Vector3.MoveTowards(platform.transform.position, WayPoints[targetIndex].position, speed * Time.deltaTime);
-            if (platform.transform.position == WayPoints[targetIndex].position) {
-                targetIndex--;
-                if (targetIndex == -1) {
-                    end = true;
+            if (platform.transform.position != WayPoints[0].position) {
+                if (platform.transform.position == WayPoints[targetIndex].position) {
+                    targetIndex--;
+                    return;
                 }
+                platform.transform.position = Vector3.MoveTowards(platform.transform.position, WayPoints[targetIndex].position, speed * Time.deltaTime);
             }
-
-            //platform.transform.position = Vector3.MoveTowards(platform.transform.position, homePosition, speed * Time.deltaTime);
         }
     }
 
     public void PowerOn(SpriteRenderer spr) {
         powered = true;
-        spr.color = Color.white;
-        end = false;
+        spr.color = activeColor;
+        targetIndex = 1;
     }
 
     public void PowerOff(SpriteRenderer spr) {
         powered = false;
-        spr.color = Color.grey;
-        end = false;
+        spr.color = originalColor;
+        targetIndex = WayPoints.Length - 2;
     }
 }

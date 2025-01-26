@@ -3,7 +3,8 @@ using UnityEngine;
 public class Launchpad : MonoBehaviour
 {
     private BoxCollider2D coll;
-    private float impulseForce = 15f;
+    public float force = 15f;
+    public Vector2 direction;
 
     private void Awake() {
         coll = GetComponent<BoxCollider2D>();
@@ -11,12 +12,11 @@ public class Launchpad : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag == "Player") {
-            Debug.Log("Player Detected");
             bool valid = Check();
             if (valid) {
                 Rigidbody2D player = collision.collider.GetComponent<Rigidbody2D>();
                 player.linearVelocity = Vector3.zero;
-                player.linearVelocityY += impulseForce;
+                player.linearVelocity += force * direction;
             }
         }
     }
