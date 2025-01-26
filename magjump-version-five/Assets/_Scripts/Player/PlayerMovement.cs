@@ -9,10 +9,10 @@ public class PlayerMovement : MonoBehaviour
     private float angle;
     [SerializeField] private GameObject pivot;
     [SerializeField] private LayerMask platformLayer;
-    private float detectionRadius = 2f;
     private SpriteRenderer spr;
     private Rigidbody2D rb;
     private BoxCollider2D coll;
+    [SerializeField] private PlayerAttributes attributes;
 
     private void Awake() {
         spr = pivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     void Update() {
         Pointer();
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, detectionRadius, platformLayer); //Player is within range to attract / repel
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, attributes.detection_radius, platformLayer); //Player is within range to attract / repel
         bool canImpulse;
         if (hit.collider != null) {
             spr.color = Color.green;
@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         else {
             impulseMode = -1;
         }
-        rb.linearVelocity = direction * impulseMode * 12;
+        rb.linearVelocity = direction * impulseMode * attributes.power;
     }
 
     private Vector2 ClampDirection(float angle) {

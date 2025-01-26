@@ -2,31 +2,50 @@ using UnityEngine;
 
 public class Powered : MonoBehaviour, IPowerable
 {
-    bool powered = false;
+    private bool powered;
     [SerializeField] private float speed;
-    [SerializeField] Transform target;
-    Vector3 homePosition;
     [SerializeField] private GameObject platform;
+    public Transform[] WayPoints;
+    private int targetIndex;
+    private Color originalColor;
+    public Color activeColor;
 
     private void Start() {
-        homePosition = platform.transform.position;
+        platform.transform.position = WayPoints[0].position;
+        powered = false;
+        targetIndex = 0;
+        originalColor = platform.GetComponent<SpriteRenderer>().color;
     }
 
     private void Update() {
         if (powered == true) {
-            platform.transform.position = Vector3.MoveTowards(platform.transform.position, target.position, speed * Time.deltaTime);
+            if (platform.transform.position != WayPoints[WayPoints.Length - 1].position) {
+                if (platform.transform.position == WayPoints[targetIndex].position) {
+                    targetIndex++;
+                    return;
+                }
+                platform.transform.position = Vector3.MoveTowards(platform.transform.position, WayPoints[targetIndex].position, speed * Time.deltaTime);
+            }
         } else {
-            platform.transform.position = Vector3.MoveTowards(platform.transform.position, homePosition, speed * Time.deltaTime);
+            if (platform.transform.position != WayPoints[0].position) {
+                if (platform.transform.position == WayPoints[targetIndex].position) {
+                    targetIndex--;
+                    return;
+                }
+                platform.transform.position = Vector3.MoveTowards(platform.transform.position, WayPoints[targetIndex].position, speed * Time.deltaTime);
+            }
         }
     }
 
     public void PowerOn(SpriteRenderer spr) {
         powered = true;
-        spr.color = Color.white;
+        spr.color = activeColor;
+        targetIndex = 1;
     }
 
     public void PowerOff(SpriteRenderer spr) {
         powered = false;
-        spr.color = Color.grey;
+        spr.color = originalColor;
+        targetIndex = WayPoints.Length - 2;
     }
 }
