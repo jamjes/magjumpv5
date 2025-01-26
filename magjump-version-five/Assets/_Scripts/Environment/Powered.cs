@@ -1,35 +1,32 @@
 using UnityEngine;
 
-public class Powered : MonoBehaviour
+public class Powered : MonoBehaviour, IPowerable
 {
     bool powered = false;
     [SerializeField] private float speed;
     [SerializeField] Transform target;
     Vector3 homePosition;
+    [SerializeField] private GameObject platform;
 
     private void Start() {
-        homePosition = transform.position;
+        homePosition = platform.transform.position;
     }
 
     private void Update() {
         if (powered == true) {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            platform.transform.position = Vector3.MoveTowards(platform.transform.position, target.position, speed * Time.deltaTime);
         } else {
-            transform.position = Vector3.MoveTowards(transform.position, homePosition, speed * Time.deltaTime);
+            platform.transform.position = Vector3.MoveTowards(platform.transform.position, homePosition, speed * Time.deltaTime);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.collider.tag == "Player") {
-            powered = true;
-            GetComponent<SpriteRenderer>().color = Color.white;
-        }
+    public void PowerOn(SpriteRenderer spr) {
+        powered = true;
+        spr.color = Color.white;
     }
 
-    private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.collider.tag == "Player") {
-            powered = false;
-            GetComponent<SpriteRenderer>().color = Color.grey;
-        }
+    public void PowerOff(SpriteRenderer spr) {
+        powered = false;
+        spr.color = Color.grey;
     }
 }
