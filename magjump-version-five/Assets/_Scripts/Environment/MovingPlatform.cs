@@ -15,12 +15,8 @@ public class MovingPlatform : MonoBehaviour
 
     private void Update() {
         platform.transform.position = Vector3.MoveTowards(platform.transform.position, WayPoints[targetIndex].position, speed * Time.deltaTime);
-
         if (platform.transform.position == WayPoints[targetIndex].position) {
-            
-            
             targetIndex++;
-
             if (targetIndex == WayPoints.Length) {
                 targetIndex = 0;
             }
