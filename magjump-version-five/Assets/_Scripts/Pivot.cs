@@ -12,35 +12,11 @@ public class Pivot : MonoBehaviour
     float angle;
     bool run;
 
-    private void OnEnable() {
-        Killzone.OnPlayerDeath += StopLogic;
-        WinCondition.OnPlayerWin += StopLogic;
-    }
-
-    private void OnDisable() {
-        Killzone.OnPlayerDeath -= StopLogic;
-        WinCondition.OnPlayerWin -= StopLogic;
-    }
-
-    private void StopLogic() {
-        run = false;
-    }
-
     private void Start() {
         originalCol = spr.color;
-        StartCoroutine(DelayedStart());
-    }
-
-    private IEnumerator DelayedStart() {
-        yield return new WaitForSeconds(GameManager.instance.transitionDuration);
-        run = true;
     }
 
     private void Update() {
-        if (run == false) {
-            return;
-        }
-        
         mousePosition = Input.mousePosition;
         mousePosition.z = -10;
         objectPosition = Camera.main.WorldToScreenPoint(transform.position);

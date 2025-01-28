@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50da875681382204eba0a849a0873d00, type: 3}
   m_Name: Player Attributes
   m_EditorClassIdentifier: 
-  power: 15
+  power: 16
   detection_radius: 2

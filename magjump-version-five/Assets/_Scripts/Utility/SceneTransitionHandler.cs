@@ -31,7 +31,7 @@ public class SceneTransitionHandler : MonoBehaviour
 
     private void Start() {
         currentIndex = SceneManager.GetActiveScene().buildIndex;
-        transitionDuration = GameManager.instance.transitionDuration;
+        transitionDuration = .75f;//GameManager.instance.transitionDuration;
         Transition(-1);
     }
 

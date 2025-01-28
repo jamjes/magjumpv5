@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 objectPosition;
     private Vector2 direction;
     private float angle;
-    [SerializeField] private GameObject pivot;
+    [SerializeField] private Pivot pivot;
     [SerializeField] private LayerMask platformLayer;
     private SpriteRenderer spr;
     private Rigidbody2D rb;
@@ -15,22 +15,22 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private PlayerAttributes attributes;
 
     private void Awake() {
-        spr = pivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        //spr = pivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
     }
 
     void Update() {
-        Pointer();
-
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, attributes.detection_radius, platformLayer); //Player is within range to attract / repel
         bool canImpulse;
         if (hit.collider != null) {
-            spr.color = Color.green;
+            pivot.SetColor(Color.green);
+            //spr.color = Color.green;
             canImpulse = true;
         }
         else {
-            spr.color = Color.red;
+            pivot.SetColor(Color.red);
+            //spr.color = Color.red;
             canImpulse = false;
         }
 
@@ -80,15 +80,5 @@ public class PlayerMovement : MonoBehaviour
         else if (angle <= -10 && angle >= -80) direction = new Vector2(.5f, -.9f);
 
         return direction;
-    }
-
-    private void Pointer() {
-        mousePosition = Input.mousePosition;
-        mousePosition.z = -10;
-        objectPosition = Camera.main.WorldToScreenPoint(transform.position);
-        direction.x = mousePosition.x - objectPosition.x;
-        direction.y = mousePosition.y - objectPosition.y;
-        angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        pivot.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
