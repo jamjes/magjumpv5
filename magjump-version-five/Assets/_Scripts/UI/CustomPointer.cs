@@ -5,13 +5,14 @@ using UnityEngine.UIElements;
 public class CustomPointer : MonoBehaviour {
     private Vector3 mousePosition;
     [SerializeField] private float moveSpeed = 9f;
-    [SerializeField] private GameObject player;
+    private GameObject player;
     private Vector2 direction;
     private SpriteRenderer img;
     private float angle;
 
     private void Awake() {
         img = GetComponent<SpriteRenderer>();
+        player = GameObject.FindWithTag("Player");
     }
 
     private void Update() {
