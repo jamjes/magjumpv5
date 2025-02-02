@@ -65,6 +65,8 @@ public class PlayerSimple : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space) && rb.gravityScale == 0) {
             rb.gravityScale = 1;
+        } else if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocityY > 0) {
+            rb.linearVelocityY = -.3f;
         }
     }
 

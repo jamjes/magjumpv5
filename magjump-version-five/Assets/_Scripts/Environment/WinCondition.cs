@@ -13,7 +13,7 @@ public class WinCondition : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag == "Player") {
-            bool end = Landed();
+            bool end = true; // Landed();
 
             if (end) {
                 if (OnPlayerWin != null) {
