@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Transactions;
 using UnityEngine;
 
 public class PlayerSimple : MonoBehaviour
@@ -13,6 +14,7 @@ public class PlayerSimple : MonoBehaviour
     bool isJumpBuffer;
     float elapsedTime;
     [SerializeField] float bufferTime;
+    bool canMagnetise;
 
     private void Awake() {
         coll = GetComponent<BoxCollider2D>();
@@ -53,6 +55,17 @@ public class PlayerSimple : MonoBehaviour
         if (isJumpBuffer == true) {
             elapsedTime += Time.deltaTime;
         }
+
+        if (Input.GetKey(KeyCode.Space) && canMagnetise == true) {
+            if (rb.gravityScale != 0) {
+                rb.gravityScale = 0;
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space) && rb.gravityScale == 0) {
+            rb.gravityScale = 1;
+        }
     }
 
     private bool GroundCheck() {
@@ -83,5 +96,18 @@ public class PlayerSimple : MonoBehaviour
     private void StartJumpBuffer() {
         elapsedTime = 0;
         isJumpBuffer = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, .52f, groundLayer);
+        if (hit.collider != null && hit.collider == collision.collider) {
+            canMagnetise = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.layer == 6) {
+            canMagnetise = false;
+        }
     }
 }
