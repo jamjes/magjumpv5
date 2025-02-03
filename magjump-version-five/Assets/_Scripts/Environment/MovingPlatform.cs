@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class MovingPlatform : MonoBehaviour
-{
+public class MovingPlatform : MonoBehaviour, IMagnetisable {
     public Transform[] WayPoints;
     private float speed = 2f;
     private int targetIndex;
@@ -21,5 +20,13 @@ public class MovingPlatform : MonoBehaviour
                 targetIndex = 0;
             }
         }
+    }
+
+    public void DeMagnetise() {
+        platform.transform.DetachChildren();
+    }
+
+    public void Magnetise(Collider2D player) {
+        player.transform.SetParent(platform.transform);
     }
 }

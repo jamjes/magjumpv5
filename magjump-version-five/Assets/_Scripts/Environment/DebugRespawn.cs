@@ -19,6 +19,7 @@ public class DebugRespawn : MonoBehaviour
     }
 
     private void Respawn() {
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         transform.position = spawnPos;
     }
 }
