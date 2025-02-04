@@ -1,12 +1,13 @@
 using System.IO;
 using UnityEngine;
 
-public class SwitchPointer : MonoBehaviour
+public class Magnet : MonoBehaviour
 {
     private GameObject player;
     private SpriteRenderer spr;
-    public bool canImpulse;
-    public Vector2 maxPos, mouseAbsPos;
+    public bool CanImpulse {  get; private set; }
+    private Vector2 maxPos;
+    private Vector2 mouseAbsPos;
 
     private void Awake() {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -29,11 +30,11 @@ public class SwitchPointer : MonoBehaviour
         if (mouseAbsPos.x > maxPos.x &&
             mouseAbsPos.y > maxPos.y) {
             spr.color = Color.grey;
-            canImpulse = false;
+            CanImpulse = false;
         }
         else {
             spr.color = Color.green;
-            canImpulse = true;
+            CanImpulse = true;
         }
     }
 }

@@ -442,8 +442,8 @@ GameObject:
   - component: {fileID: 1359714197}
   - component: {fileID: 1359714198}
   - component: {fileID: 1359714199}
-  - component: {fileID: 1359714200}
   - component: {fileID: 1359714201}
+  - component: {fileID: 1359714202}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -594,21 +594,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1359714200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359714194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 805a909caa004ae4497dd8478c948a4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &1359714201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,6 +606,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77bee3cd7caa86f4a9028103e625c594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1359714202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359714194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f7f66316b0dfa419a6e622c73870c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  pointer: {fileID: 2047329999}
 --- !u!1 &1433305305
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,7 +634,7 @@ GameObject:
   - component: {fileID: 1433305307}
   - component: {fileID: 1433305306}
   m_Layer: 6
-  m_Name: Floor (2)
+  m_Name: Ceiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1179,7 +1180,7 @@ GameObject:
   - component: {fileID: 2047329997}
   - component: {fileID: 2047329999}
   m_Layer: 0
-  m_Name: Clamped Pointer
+  m_Name: Pointer
   m_TagString: Pointer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1267,7 +1268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2bf60bbb28c59549915c77d8371c12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1359714194}
+  maxPos: {x: 0, y: 0}
+  mouseAbsPos: {x: 0, y: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
