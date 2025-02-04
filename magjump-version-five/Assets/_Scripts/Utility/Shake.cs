@@ -36,7 +36,11 @@ public class Shake : MonoBehaviour
         transform.position = startPosition;
     }
 
-    private void Trigger() {
+    /*private void Trigger() {
+        start = true;
+    }*/
+
+    public void Trigger() {
         start = true;
     }
 }

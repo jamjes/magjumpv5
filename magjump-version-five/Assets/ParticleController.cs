@@ -21,6 +21,7 @@ public class ParticleController : MonoBehaviour
 
         if (groundCheck.collider != null) {
             landParticles.Play();
+            Camera.main.GetComponent<Shake>().Trigger();
         } else if (ceilingCheck.collider != null) {
             magnetiseParticles.Play();
         }
