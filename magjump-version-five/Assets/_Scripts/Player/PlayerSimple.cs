@@ -1,115 +1,73 @@
-using System.Collections;
-using System.Transactions;
 using UnityEngine;
 
-public class PlayerSimple : MonoBehaviour
-{
-    [SerializeField] private LayerMask groundLayer;
-    bool grounded;
+public class PlayerSimple : MonoBehaviour {
     private BoxCollider2D coll;
-    private Rigidbody2D rb;
-    private float direction;
-    [SerializeField] private float xSpeed, yForce;
-    bool isApex;
-    bool isJumpBuffer;
-    float elapsedTime;
-    [SerializeField] float bufferTime;
-    bool canMagnetise;
+    [SerializeField] private LayerMask groundLayer;
+    private GameObject pointer;
+    private float force = 15f;
+    private float detectionLength = 3f;
+    private bool? impulseMode;
+    private Rigidbody2D rbd;
+    private bool canMagnetise;
 
     private void Awake() {
+        pointer = GameObject.FindGameObjectWithTag("Pointer");
         coll = GetComponent<BoxCollider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        rbd = GetComponent<Rigidbody2D>();
     }
+
 
     private void Update() {
-        grounded = GroundCheck();
-
-        if (grounded && isApex == true) {
-            isApex = false;
-        } else if (isJumpBuffer && grounded && elapsedTime <= bufferTime) {
-            isJumpBuffer = false;
-            Jump();
-        }
-
-        if (grounded && Input.GetKeyDown(KeyCode.Space)) {
-            Jump();
-        }
-        else if (!grounded && Input.GetKeyDown(KeyCode.Space)) {
-            StartJumpBuffer();
-        }
+        Vector2 direction = (pointer.transform.position - transform.position).normalized;
         
-        if (Input.GetKey(KeyCode.LeftArrow)) {
-            direction = -1;
-        } else if (Input.GetKey(KeyCode.RightArrow)) { 
-            direction = 1; 
-        } else {
-            direction = 0;
+        if (Input.GetKeyDown(KeyCode.X)) {
+            Impulse(direction);
         }
 
-        if ((rb.linearVelocityY < 0.25f && rb.linearVelocityY > -0.25f) && grounded == false) {
-            if (isApex != true) {
-                StartCoroutine(Apex());
+        if (Input.GetKey(KeyCode.X) && canMagnetise) {
+            if (rbd.gravityScale != 0) {
+                rbd.gravityScale = 0;
+                rbd.linearVelocity = Vector3.zero;
             }
         }
 
-        if (isJumpBuffer == true) {
-            elapsedTime += Time.deltaTime;
-        }
-
-        if (Input.GetKey(KeyCode.Space) && canMagnetise == true) {
-            if (rb.gravityScale != 0) {
-                rb.gravityScale = 0;
-                rb.linearVelocity = Vector2.zero;
-            }
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space) && rb.gravityScale == 0) {
-            rb.gravityScale = 1;
-        } else if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocityY > 0) {
-            rb.linearVelocityY = -.3f;
+        if (Input.GetKeyUp(KeyCode.X) && rbd.gravityScale != 1) {
+            rbd.gravityScale = 1;
+            canMagnetise = false;
         }
     }
 
-    private bool GroundCheck() {
-        RaycastHit2D hit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0, Vector2.down, .1f, groundLayer);
-        return hit.collider != null;
-    }
-
-    private void Jump() {
-        float jumpForce = yForce;
-        if (direction != 0) {
-            jumpForce = yForce * .95f;
+    private void Impulse(Vector2 direction) {
+        if (pointer.GetComponent<SwitchPointer>().canImpulse == false) {
+            return;
         }
-        rb.linearVelocity = new Vector2(direction * xSpeed, jumpForce);
-    }
 
+        RaycastHit2D grounded = GroundCheck();
+        RaycastHit2D target = MagnetCheck(direction, detectionLength);
 
-    private IEnumerator Apex() {
-        isApex = true;
-        float originalSpeed = xSpeed;
-        xSpeed = originalSpeed * 1.125f;
-        rb.gravityScale = 0;
-        rb.linearVelocityY = 0;
-        yield return new WaitForSeconds(.25f);
-        rb.gravityScale = 1;
-        xSpeed = originalSpeed;
-    }
-
-    private void StartJumpBuffer() {
-        elapsedTime = 0;
-        isJumpBuffer = true;
+        if (grounded.collider == target.collider) {
+            rbd.linearVelocity = new Vector2(direction.x * force * -1, force);
+        }
+        else if (target.collider != null && direction.y > 0){
+            rbd.linearVelocity = new Vector2(direction.x * force, force);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, .52f, groundLayer);
-        if (hit.collider != null && hit.collider == collision.collider) {
+        RaycastHit2D hit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0, Vector2.up, .2f, groundLayer);
+        if (hit.collider != null && collision.gameObject.layer == 6) {
             canMagnetise = true;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.gameObject.layer == 6) {
-            canMagnetise = false;
-        }
+    private RaycastHit2D MagnetCheck(Vector2 direction, float magnetStrength) {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, magnetStrength, groundLayer);
+        return hit;
     }
+
+    private RaycastHit2D GroundCheck() {
+        RaycastHit2D hit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0, Vector2.down, .2f, groundLayer);
+        return hit;
+    }
+
 }

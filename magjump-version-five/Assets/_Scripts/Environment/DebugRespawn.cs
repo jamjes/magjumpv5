@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DebugRespawn : MonoBehaviour
@@ -6,12 +7,12 @@ public class DebugRespawn : MonoBehaviour
 
     private void OnEnable() {
         Killzone.OnPlayerDeath += Respawn;
-        WinCondition.OnPlayerWin += Respawn;
+        //WinCondition.OnPlayerWin += Respawn;
     }
 
     private void OnDisable() {
         Killzone.OnPlayerDeath -= Respawn;
-        WinCondition.OnPlayerWin -= Respawn;
+        //WinCondition.OnPlayerWin -= Respawn;
     }
 
     private void Start() {
@@ -19,6 +20,11 @@ public class DebugRespawn : MonoBehaviour
     }
 
     private void Respawn() {
+        StartCoroutine(ResetRoutine());
+    }
+
+    private IEnumerator ResetRoutine() {
+        yield return new WaitForSeconds(.3f);
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         transform.position = spawnPos;
     }

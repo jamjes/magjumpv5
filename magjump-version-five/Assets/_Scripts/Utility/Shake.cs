@@ -7,6 +7,14 @@ public class Shake : MonoBehaviour
     public AnimationCurve curve;
     public float duration = 1f;
 
+    private void OnEnable() {
+        Killzone.OnPlayerDeath += Trigger;
+    }
+
+    private void OnDisable() {
+        Killzone.OnPlayerDeath -= Trigger;
+    }
+
     private void Update() {
         if (start == true) {
             start = false;
@@ -26,5 +34,9 @@ public class Shake : MonoBehaviour
         }
 
         transform.position = startPosition;
+    }
+
+    private void Trigger() {
+        start = true;
     }
 }

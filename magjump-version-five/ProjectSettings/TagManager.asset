@@ -6,6 +6,7 @@ TagManager:
   tags:
   - South
   - North
+  - Pointer
   layers:
   - Default
   - TransparentFX
