@@ -13,10 +13,6 @@ public class PlatformAnimator : MonoBehaviour, IMagnetisable
     private BoxCollider2D coll;
     [SerializeField] LayerMask groundLayer;
 
-    private void Awake() {
-        //coll = GetComponent<BoxCollider2D>();
-    }
-
     private void Start() {
         idlePosition = transform.position;
         activePosition = new Vector2(idlePosition.x, idlePosition.y - .125f);
@@ -29,25 +25,6 @@ public class PlatformAnimator : MonoBehaviour, IMagnetisable
         if (targetPosition == (Vector2)transform.position) {
             targetPosition = idlePosition;
         }
-
-        //RaycastHit2D[] hits = Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size, 0, Vector2.up, .2f);
-
-        //bool found = false;
-        //foreach(RaycastHit2D hit in hits) {
-        //    if (hit.collider != null && hit.collider.CompareTag("Player")) {
-        //        found = true;
-        //    }
-        //}
-
-        //if (!found && targetPosition != idlePosition) {
-        //    targetPosition = idlePosition;
-        //}
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision) {
-        //if (collision.collider.CompareTag("Player")) {
-        //    targetPosition = activePosition;
-        //}
     }
 
     public void Magnetise(Collider2D player) {
@@ -60,6 +37,12 @@ public class PlatformAnimator : MonoBehaviour, IMagnetisable
 
     public void Effect() {
         targetPosition = activePosition;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.CompareTag("Player")) {
+            targetPosition = activePosition;
+        }
     }
 }
 

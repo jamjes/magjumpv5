@@ -9,10 +9,12 @@ public class Shake : MonoBehaviour
 
     private void OnEnable() {
         Killzone.OnPlayerDeath += Trigger;
+        Hazard.OnHazordEnter += Trigger;
     }
 
     private void OnDisable() {
         Killzone.OnPlayerDeath -= Trigger;
+        Hazard.OnHazordEnter -= Trigger;
     }
 
     private void Update() {
