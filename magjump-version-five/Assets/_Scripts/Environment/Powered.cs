@@ -7,14 +7,11 @@ public class Powered : MonoBehaviour, IPowerable
     [SerializeField] private GameObject platform;
     public Transform[] WayPoints;
     private int targetIndex;
-    private Color originalColor;
-    public Color activeColor;
 
     private void Start() {
         platform.transform.position = WayPoints[0].position;
         powered = false;
         targetIndex = 0;
-        originalColor = platform.GetComponent<SpriteRenderer>().color;
     }
 
     private void Update() {
@@ -39,13 +36,11 @@ public class Powered : MonoBehaviour, IPowerable
 
     public void PowerOn(SpriteRenderer spr) {
         powered = true;
-        spr.color = activeColor;
         targetIndex = 1;
     }
 
     public void PowerOff(SpriteRenderer spr) {
         powered = false;
-        spr.color = originalColor;
         targetIndex = WayPoints.Length - 2;
     }
 }

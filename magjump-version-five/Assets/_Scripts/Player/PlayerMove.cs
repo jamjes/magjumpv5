@@ -7,7 +7,7 @@ public class PlayerMove : MonoBehaviour {
     private float force = 15f;
     private bool isInApex;
     private float fallGravity = 1.5f;
-
+    public Vector2 Direction {  get; private set; }
     private PlayerCollisionHandler _collisions;
 
     private void Awake() {
@@ -16,15 +16,15 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void Update() {
-        Vector2 direction = (pointer.transform.position - transform.position).normalized;
+        Direction = (pointer.transform.position - transform.position).normalized;
         RaycastHit2D grounded = _collisions.BoxCollisionCheck(Vector2.down);
         bool isGrounded = _collisions.IsGround();
 
-        if (Input.GetKeyDown(KeyCode.X)) {
-            Impulse(direction, grounded);
+        if (Input.GetKeyUp(KeyCode.X)) {
+            Impulse(Direction, grounded);
         }
 
-        if (Input.GetKey(KeyCode.X) && _collisions.CanMagnetise) {
+        /*if (Input.GetKey(KeyCode.X) && _collisions.CanMagnetise) {
             if (rbd.gravityScale != 0) {
                 rbd.gravityScale = 0;
                 rbd.linearVelocity = Vector3.zero;
@@ -34,7 +34,7 @@ public class PlayerMove : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.X) && rbd.gravityScale != 1) {
             rbd.gravityScale = 1;
             _collisions.SetMagnetise(false);
-        }
+        }*/
 
         if (rbd.linearVelocityY > -2 && rbd.linearVelocityY < 2
             && isGrounded == false) {
@@ -86,5 +86,9 @@ public class PlayerMove : MonoBehaviour {
             rbd.linearVelocityY = -3;
             isInApex = false;
         }
+    }
+
+    public bool IsGrounded() {
+        return _collisions.IsGround();
     }
 }

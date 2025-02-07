@@ -29,4 +29,8 @@ public class MovingPlatform : MonoBehaviour, IMagnetisable {
     public void Magnetise(Collider2D player) {
         player.transform.SetParent(platform.transform);
     }
+
+    public void Effect() {
+        throw new System.NotImplementedException();
+    }
 }

@@ -8,4 +8,6 @@ public interface IPowerable {
 public interface IMagnetisable {
     void Magnetise(Collider2D player);
     void DeMagnetise();
+
+    void Effect();
 }

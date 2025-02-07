@@ -29,12 +29,34 @@ public class Magnet : MonoBehaviour
 
         if (mouseAbsPos.x > maxPos.x &&
             mouseAbsPos.y > maxPos.y) {
-            spr.color = Color.grey;
             CanImpulse = false;
         }
         else {
-            spr.color = Color.green;
             CanImpulse = true;
+        }
+
+        //Get the Screen positions of the object
+        //Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
+
+        //Get the Screen position of the mouse
+        //Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(player.transform.position);
+
+        //Get the angle between the points
+        float angle = AngleBetweenTwoPoints(transform.position, player.transform.position);
+
+        //Ta Daaa
+        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+    }
+
+    float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+    }
+
+    public void Hide(bool condition) {
+        if (condition == true) {
+            spr.enabled = false;
+        } else {
+            spr.enabled = true;
         }
     }
 }

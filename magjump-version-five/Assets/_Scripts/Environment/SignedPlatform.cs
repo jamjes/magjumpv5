@@ -8,4 +8,8 @@ public class SignedPlatform : MonoBehaviour, IMagnetisable {
     public void Magnetise(Collider2D player) {
         player.transform.SetParent(transform);
     }
+
+    public void Effect() {
+        throw new System.NotImplementedException();
+    }
 }

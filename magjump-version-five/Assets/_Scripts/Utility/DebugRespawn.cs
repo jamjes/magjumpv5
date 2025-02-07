@@ -7,11 +7,13 @@ public class DebugRespawn : MonoBehaviour
 
     private void OnEnable() {
         Killzone.OnPlayerDeath += Respawn;
+        Hazard.OnHazordEnter += Respawn;
         //WinCondition.OnPlayerWin += Respawn;
     }
 
     private void OnDisable() {
         Killzone.OnPlayerDeath -= Respawn;
+        Hazard.OnHazordEnter -= Respawn;
         //WinCondition.OnPlayerWin -= Respawn;
     }
 
