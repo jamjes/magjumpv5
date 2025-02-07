@@ -30,8 +30,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Level Blockout/bo_five.unity
     guid: d9a06eea4af5a6747aed9585d4d5f106
   - enabled: 1
+    path: Assets/Scenes/Final/startScene.unity
+    guid: 4a99261f05ec5e24ba7912e39a47a6a2
+  - enabled: 1
     path: Assets/Scenes/Final/level-one.unity
     guid: 9fce0cadca8b97d4c80bf1a74711247a
+  - enabled: 1
+    path: Assets/Scenes/Final/endScene.unity
+    guid: 822ae9d48fdce1e4db564e14090aef54
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

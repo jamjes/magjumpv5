@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class WinCondition : MonoBehaviour
 {
@@ -11,26 +10,11 @@ public class WinCondition : MonoBehaviour
         coll = GetComponent<BoxCollider2D>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.collider.tag == "Player") {
-            bool end = true; // Landed();
-
-            if (end) {
-                if (OnPlayerWin != null) {
-                    OnPlayerWin();
-                }
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Player")) {
+            if (OnPlayerWin != null) {
+                OnPlayerWin();
             }
         }
-    }
-
-    private bool Landed() {
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size, 0, Vector2.up, .2f);
-        foreach(RaycastHit2D hit in hits) {
-            if (hit.collider != null && hit.collider.tag == "Player") {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

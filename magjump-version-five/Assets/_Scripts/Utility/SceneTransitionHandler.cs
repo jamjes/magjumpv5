@@ -15,23 +15,13 @@ public class SceneTransitionHandler : MonoBehaviour
     public delegate void SceneEvent();
     public static event SceneEvent OnGameReset;
 
-    private void OnEnable() {
-        Killzone.OnPlayerDeath += ResetScene;
-        WinCondition.OnPlayerWin += NextScene;
-    }
-
-    private void OnDisable() {
-        Killzone.OnPlayerDeath -= ResetScene;
-        WinCondition.OnPlayerWin -= NextScene;
-    }
-
     private void Awake() {
         fader = GetComponent<Image>();
     }
 
     private void Start() {
         currentIndex = SceneManager.GetActiveScene().buildIndex;
-        transitionDuration = .75f;//GameManager.instance.transitionDuration;
+        transitionDuration = .75f;
         Transition(-1);
     }
 

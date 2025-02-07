@@ -8,13 +8,11 @@ public class DebugRespawn : MonoBehaviour
     private void OnEnable() {
         Killzone.OnPlayerDeath += Respawn;
         Hazard.OnHazordEnter += Respawn;
-        //WinCondition.OnPlayerWin += Respawn;
     }
 
     private void OnDisable() {
         Killzone.OnPlayerDeath -= Respawn;
         Hazard.OnHazordEnter -= Respawn;
-        //WinCondition.OnPlayerWin -= Respawn;
     }
 
     private void Start() {
@@ -26,8 +24,8 @@ public class DebugRespawn : MonoBehaviour
     }
 
     private IEnumerator ResetRoutine() {
-        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(.5f);
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         transform.position = spawnPos;
     }
 }

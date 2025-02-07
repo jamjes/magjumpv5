@@ -8,14 +8,17 @@ public class SoundController : MonoBehaviour
     public LayerMask groundLayer;
     public AudioSource land;
     public AudioSource death;
+    public AudioSource win;
     private Rigidbody2D rb;
 
     private void OnEnable() {
         Hazard.OnHazordEnter += PlayDeathSound;
+        WinCondition.OnPlayerWin += PlayWinSound;
     }
 
     private void OnDisable() {
         Hazard.OnHazordEnter -= PlayDeathSound;
+        WinCondition.OnPlayerWin -= PlayWinSound;
     }
 
     private void Awake() {
@@ -60,6 +63,11 @@ public class SoundController : MonoBehaviour
 
     private void PlayDeathSound() {
         death.Play();
+        elapsedTime = 0;
+    }
+
+    private void PlayWinSound() {
+        win.Play();
         elapsedTime = 0;
     }
 }
