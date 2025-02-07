@@ -35,17 +35,14 @@ public class Magnet : MonoBehaviour
             CanImpulse = true;
         }
 
-        //Get the Screen positions of the object
-        //Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
-
-        //Get the Screen position of the mouse
-        //Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(player.transform.position);
-
-        //Get the angle between the points
         float angle = AngleBetweenTwoPoints(transform.position, player.transform.position);
-
-        //Ta Daaa
         transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+
+        if (CanImpulse == true && spr.color != Color.green) {
+            spr.color = Color.green;
+        } else if (CanImpulse == false && spr.color != Color.red) {
+            spr.color = Color.red;
+        }
     }
 
     float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
@@ -54,9 +51,9 @@ public class Magnet : MonoBehaviour
 
     public void Hide(bool condition) {
         if (condition == true) {
-            spr.enabled = false;
+            spr.color = new Color(spr.color.r, spr.color.g, spr.color.b, .1f);
         } else {
-            spr.enabled = true;
+            spr.color = new Color(spr.color.r, spr.color.g, spr.color.b, 1f);
         }
     }
 }

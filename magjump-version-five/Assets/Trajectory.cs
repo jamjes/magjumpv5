@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Trajectory : MonoBehaviour
 {
@@ -7,7 +9,8 @@ public class Trajectory : MonoBehaviour
     private float curveLength = 1f;
     private Vector2[] _segments;
     private float force = 15;
-    [SerializeField] private PlayerMove player;
+    [SerializeField] private PlayerController player;
+    [SerializeField] private Magnet magnet;
     [SerializeField] private Rigidbody2D rb;
 
     private void Start() {
@@ -17,10 +20,21 @@ public class Trajectory : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKey(KeyCode.X) == false) {
-            return;
+        if (Input.GetKeyUp(KeyCode.Space) && _lineRenderer.positionCount == _segmentCount) {
+            StartCoroutine(DelayedReset());
         }
         
+        if (Input.GetKey(KeyCode.Space) == false) {
+            return;
+        }
+
+        if (magnet.CanImpulse == false) {
+            _lineRenderer.positionCount = 0;
+            return;
+        }
+
+        if (_lineRenderer.positionCount != _segmentCount) _lineRenderer.positionCount = _segmentCount;
+
         Vector2 startPos = transform.position;
         _segments[0] = startPos;
         _lineRenderer.SetPosition(0, startPos);
@@ -40,6 +54,10 @@ public class Trajectory : MonoBehaviour
             _segments[i] = _segments[0] + startVel * timeOffset + gravOffset;
             _lineRenderer.SetPosition(i, _segments[i]);
         }
+    }
 
+    private IEnumerator DelayedReset() {
+        yield return new WaitForSeconds(.2f);
+        _lineRenderer.positionCount = 0;
     }
 }

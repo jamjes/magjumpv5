@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     public Magnet magnet;
     public PlayerMovementHandler movement;
     public PlayerCollisionHandler collisions;
+    public Vector2 Direction {  get; private set; }
 
     private void Start() {
         magnet.Hide(true);
@@ -13,8 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update() {
         bool isGrounded = collisions.IsGround();
-        Vector2 direction = (magnet.transform.position - transform.position).normalized;
-        float xDirection = direction.x * -1;
+        Direction = (magnet.transform.position - transform.position).normalized;
+        float xDirection = Direction.x * -1;
 
         if (Input.GetKey(KeyCode.Space)) {
             magnet.Hide(false);
@@ -24,7 +25,11 @@ public class PlayerController : MonoBehaviour
         }
 
         if (Input.GetKeyUp(KeyCode.Space)) {
-            if (direction.y > 0 || isGrounded == false) {
+            if (Direction.y > 0 || isGrounded == false) {
+                return;
+            }
+
+            if (magnet.CanImpulse == false) {
                 return;
             }
             
