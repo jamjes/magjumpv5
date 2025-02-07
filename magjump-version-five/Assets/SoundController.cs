@@ -1,27 +1,26 @@
-using System.Threading;
 using UnityEngine;
 
-public class ParticleController : MonoBehaviour
+public class SoundController : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem landParticles;
-    [SerializeField] private ParticleSystem magnetiseParticles;
-    [SerializeField] private LayerMask groundLayer;
+    private bool timer = false;
     private BoxCollider2D coll;
+    private float elapsedTime;
+    public LayerMask groundLayer;
+    public AudioSource land;
+    public AudioSource death;
     private Rigidbody2D rb;
-    bool timer = false;
-    float elapsedTime = 0;
+
+    private void OnEnable() {
+        Hazard.OnHazordEnter += PlayDeathSound;
+    }
+
+    private void OnDisable() {
+        Hazard.OnHazordEnter -= PlayDeathSound;
+    }
 
     private void Awake() {
         coll = GetComponent<BoxCollider2D>();
         rb = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
-    }
-
-    private void OnEnable() {
-        Hazard.OnHazordEnter += ResetTimer;
-    }
-
-    private void OnDisable() {
-        Hazard.OnHazordEnter -= ResetTimer;
     }
 
     private void Update() {
@@ -42,7 +41,7 @@ public class ParticleController : MonoBehaviour
 
         timer = false;
 
-        if (elapsedTime < .6f) {
+        if (elapsedTime < .5f) {
             elapsedTime = 0;
             return;
         }
@@ -51,14 +50,16 @@ public class ParticleController : MonoBehaviour
         RaycastHit2D ceilingCheck = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0, Vector2.up, .1f, groundLayer);
 
         if (groundCheck.collider != null) {
-            landParticles.Play();
-        } else if (ceilingCheck.collider != null) {
-            magnetiseParticles.Play();
+            land.Play();
+        }
+        else if (ceilingCheck.collider != null) {
+            //
         }
         elapsedTime = 0;
     }
 
-    private void ResetTimer() {
+    private void PlayDeathSound() {
+        death.Play();
         elapsedTime = 0;
     }
 }

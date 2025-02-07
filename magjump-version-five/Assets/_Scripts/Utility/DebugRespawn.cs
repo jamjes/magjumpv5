@@ -26,8 +26,8 @@ public class DebugRespawn : MonoBehaviour
     }
 
     private IEnumerator ResetRoutine() {
-        yield return new WaitForSeconds(.3f);
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+        yield return new WaitForSeconds(.5f);
         transform.position = spawnPos;
     }
 }
