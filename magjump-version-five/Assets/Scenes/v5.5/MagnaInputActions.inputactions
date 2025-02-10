@@ -1,0 +1,54 @@
+{
+    "name": "MagnaInputActions",
+    "maps": [
+        {
+            "name": "Default",
+            "id": "834cf745-ae75-42c2-9b6f-b2e6d1338dd8",
+            "actions": [
+                {
+                    "name": "Repulse",
+                    "type": "Button",
+                    "id": "239be44d-3fd7-4513-b501-654d2eebd360",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attract",
+                    "type": "Button",
+                    "id": "efb9ee53-1158-47e6-842e-df2585f8b296",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c01d2546-f900-4a47-875a-1637aa888bbb",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Repulse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb65d224-015f-44a2-9482-af35e14120e2",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
