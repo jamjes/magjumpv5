@@ -44,6 +44,15 @@ public partial class @MagnaInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Magnet"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b5a75077-423f-4cd8-866a-b48b081b3523"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +77,17 @@ public partial class @MagnaInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Attract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bcf8b87b-2873-4a64-8b47-4b3ad827d58a"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Magnet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -78,6 +98,7 @@ public partial class @MagnaInputActions: IInputActionCollection2, IDisposable
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
         m_Default_Repulse = m_Default.FindAction("Repulse", throwIfNotFound: true);
         m_Default_Attract = m_Default.FindAction("Attract", throwIfNotFound: true);
+        m_Default_Magnet = m_Default.FindAction("Magnet", throwIfNotFound: true);
     }
 
     ~@MagnaInputActions()
@@ -146,12 +167,14 @@ public partial class @MagnaInputActions: IInputActionCollection2, IDisposable
     private List<IDefaultActions> m_DefaultActionsCallbackInterfaces = new List<IDefaultActions>();
     private readonly InputAction m_Default_Repulse;
     private readonly InputAction m_Default_Attract;
+    private readonly InputAction m_Default_Magnet;
     public struct DefaultActions
     {
         private @MagnaInputActions m_Wrapper;
         public DefaultActions(@MagnaInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Repulse => m_Wrapper.m_Default_Repulse;
         public InputAction @Attract => m_Wrapper.m_Default_Attract;
+        public InputAction @Magnet => m_Wrapper.m_Default_Magnet;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -167,6 +190,9 @@ public partial class @MagnaInputActions: IInputActionCollection2, IDisposable
             @Attract.started += instance.OnAttract;
             @Attract.performed += instance.OnAttract;
             @Attract.canceled += instance.OnAttract;
+            @Magnet.started += instance.OnMagnet;
+            @Magnet.performed += instance.OnMagnet;
+            @Magnet.canceled += instance.OnMagnet;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -177,6 +203,9 @@ public partial class @MagnaInputActions: IInputActionCollection2, IDisposable
             @Attract.started -= instance.OnAttract;
             @Attract.performed -= instance.OnAttract;
             @Attract.canceled -= instance.OnAttract;
+            @Magnet.started -= instance.OnMagnet;
+            @Magnet.performed -= instance.OnMagnet;
+            @Magnet.canceled -= instance.OnMagnet;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -198,5 +227,6 @@ public partial class @MagnaInputActions: IInputActionCollection2, IDisposable
     {
         void OnRepulse(InputAction.CallbackContext context);
         void OnAttract(InputAction.CallbackContext context);
+        void OnMagnet(InputAction.CallbackContext context);
     }
 }

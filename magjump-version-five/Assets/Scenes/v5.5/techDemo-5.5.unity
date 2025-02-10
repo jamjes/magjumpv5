@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 218290668}
   - component: {fileID: 218290667}
   - component: {fileID: 218290666}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -547,6 +547,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d606838ad6cf941b27450744c2e9d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1143703619
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,7 +698,7 @@ GameObject:
   - component: {fileID: 1593129182}
   - component: {fileID: 1593129181}
   - component: {fileID: 1593129180}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
