@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Magna : MonoBehaviour {
+    [Header("Dependencies")]
+    [SerializeField] private MagnaPointer pointer;
+    
     [Header("Input")]
     private Vector2 _direction;
     private MagnaInputActions _actions;
+    public bool CanFreeze { get; private set; }
 
     [Header("Collision")]
     [SerializeField] private LayerMask groundLayer;
@@ -26,6 +31,8 @@ public class Magna : MonoBehaviour {
 
     private void OnEnable() {
         _actions.Enable();
+        _actions.Default.Attract.performed += EvaluateMagnetism;
+        _actions.Default.Attract.canceled += EvaluateMagnetism;
     }
 
     private void Update() {
@@ -35,7 +42,9 @@ public class Magna : MonoBehaviour {
         _direction = new Vector2(x, y).normalized;
 
         if (_actions.Default.Attract.triggered && _direction.y > 0) {
-            Movement.ApplyForce(_direction);
+            if (pointer.CanImpulse()) {
+                Movement.ApplyForce(_direction);
+            }
         }
 
         if (isGrounded == false) {
@@ -43,16 +52,14 @@ public class Magna : MonoBehaviour {
         }
 
         if (_actions.Default.Repulse.triggered && _direction.y < 0) {
-            Movement.ApplyForce(_direction * -1);
+            if (pointer.CanImpulse()) {
+                Movement.ApplyForce(_direction * -1);
+            }
         }
     }
 
     private void FixedUpdate() {
         Movement.GravityUpdate();
-    }
-
-    private void OnDisable() {
-        _actions.Disable();
     }
 
     private Vector2 GetMouseRelativePosition() {
@@ -64,5 +71,30 @@ public class Magna : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         Collision.CollisionEnter(collision);
+    }
+
+    private void EvaluateMagnetism(InputAction.CallbackContext cxt) {
+        if (cxt.performed) {
+            CanFreeze = true;
+        } else if (cxt.canceled) {
+            Unfreeze();
+        }
+    }
+
+
+    private void OnDisable() {
+        _actions.Default.Attract.performed -= EvaluateMagnetism;
+        _actions.Default.Attract.canceled -= EvaluateMagnetism;
+        _actions.Disable();
+    }
+
+    public void Freeze() {
+        Rb.gravityScale = 0;
+        Rb.linearVelocity = Vector2.zero;
+    }
+
+    public void Unfreeze() {
+        Rb.gravityScale = 1 * fallGravityMultiplier;
+        CanFreeze = false;
     }
 }

@@ -19,11 +19,13 @@ public class MagnaCollision
 
     public void CollisionEnter(Collision2D collision) {
         if (collision.gameObject.layer == 7) {
-            _player.Rb.linearVelocity = Vector2.zero;
+            bool isGrounded = CollisionCheck(Vector2.down);
+            bool isCeiled = CollisionCheck(Vector2.up);
+            if (isGrounded) {
+                _player.Rb.linearVelocity = Vector2.zero;
+            } else if (isCeiled && _player.CanFreeze) {
+                _player.Freeze();
+            }
         }
-    }
-
-    public void CollisionExit(Collision2D collision) {
-
     }
 }
