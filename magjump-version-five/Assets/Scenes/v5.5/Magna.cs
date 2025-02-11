@@ -12,6 +12,7 @@ public class Magna : MonoBehaviour {
 
     [Header("Physics")]
     [SerializeField] private float force = 15f;
+    [SerializeField] private float fallGravityMultiplier = 1.25f;
     public Rigidbody2D Rb { get; private set; }
     public MagnaMovement Movement { get; private set; }
 
@@ -19,7 +20,7 @@ public class Magna : MonoBehaviour {
         Coll = GetComponent<BoxCollider2D>();
         Rb = GetComponent<Rigidbody2D>();
         _actions = new MagnaInputActions();
-        Movement = new MagnaMovement(this, force);
+        Movement = new MagnaMovement(this, force, fallGravityMultiplier);
         Collision = new MagnaCollision(this, groundLayer);
     }
 
@@ -33,7 +34,7 @@ public class Magna : MonoBehaviour {
         float y = GetMouseRelativePosition().y > 0 ? 1 : -1;
         _direction = new Vector2(x, y).normalized;
 
-        if (_actions.Default.Attract.triggered) {
+        if (_actions.Default.Attract.triggered && _direction.y > 0) {
             Movement.ApplyForce(_direction);
         }
 
@@ -41,9 +42,13 @@ public class Magna : MonoBehaviour {
             return;
         }
 
-        if (_actions.Default.Repulse.triggered) {
+        if (_actions.Default.Repulse.triggered && _direction.y < 0) {
             Movement.ApplyForce(_direction * -1);
         }
+    }
+
+    private void FixedUpdate() {
+        Movement.GravityUpdate();
     }
 
     private void OnDisable() {
@@ -55,5 +60,9 @@ public class Magna : MonoBehaviour {
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
         mousePos -= (Vector2)transform.position;
         return mousePos.normalized;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        Collision.CollisionEnter(collision);
     }
 }

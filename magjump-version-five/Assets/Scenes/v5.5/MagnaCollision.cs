@@ -16,4 +16,14 @@ public class MagnaCollision
         RaycastHit2D hit = Physics2D.BoxCast(_coll.bounds.center, _coll.bounds.size, 0, targetDirection, .2f, _groundLayer);
         return hit.collider != null;
     }
+
+    public void CollisionEnter(Collision2D collision) {
+        if (collision.gameObject.layer == 7) {
+            _player.Rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    public void CollisionExit(Collision2D collision) {
+
+    }
 }
