@@ -1,24 +1,26 @@
 using UnityEngine;
 
-public class Magna : MonoBehaviour
-{
-    private BoxCollider2D _coll;
-    private Rigidbody2D _rb;
+public class Magna : MonoBehaviour {
+    [Header("Input")]
+    private Vector2 _direction;
     private MagnaInputActions _actions;
-    [SerializeField] private Vector2 _direction;
-    private float _magnetForce;
-    private LayerMask groundLayer;
+
+    [Header("Collision")]
+    [SerializeField] private LayerMask groundLayer;
+    public BoxCollider2D Coll { get; private set; }
+    public MagnaCollision Collision { get; private set; }
+
+    [Header("Physics")]
+    [SerializeField] private float force = 15f;
+    public Rigidbody2D Rb { get; private set; }
+    public MagnaMovement Movement { get; private set; }
 
     private void Awake() {
-        _coll = GetComponent<BoxCollider2D>();
-        _rb = GetComponent<Rigidbody2D>();
+        Coll = GetComponent<BoxCollider2D>();
+        Rb = GetComponent<Rigidbody2D>();
         _actions = new MagnaInputActions();
-    }
-
-    private void Start() {
-        _direction = Vector2.down;
-        _magnetForce = 15f;
-        groundLayer = LayerMask.GetMask("Ground");
+        Movement = new MagnaMovement(this, force);
+        Collision = new MagnaCollision(this, groundLayer);
     }
 
     private void OnEnable() {
@@ -26,13 +28,13 @@ public class Magna : MonoBehaviour
     }
 
     private void Update() {
-        bool isGrounded = IsGrounded();
+        bool isGrounded = Collision.CollisionCheck(Vector2.down);
         float x = GetMouseRelativePosition().x;
         float y = GetMouseRelativePosition().y > 0 ? 1 : -1;
         _direction = new Vector2(x, y).normalized;
 
         if (_actions.Default.Attract.triggered) {
-            ApplyForce(_direction);
+            Movement.ApplyForce(_direction);
         }
 
         if (isGrounded == false) {
@@ -40,21 +42,12 @@ public class Magna : MonoBehaviour
         }
 
         if (_actions.Default.Repulse.triggered) {
-            ApplyForce(_direction * -1);
+            Movement.ApplyForce(_direction * -1);
         }
     }
 
     private void OnDisable() {
         _actions.Disable();
-    }
-
-    private void ApplyForce(Vector2 direction) {
-        _rb.linearVelocity = direction * _magnetForce;
-    }
-
-    private bool IsGrounded() {
-        RaycastHit2D hit = Physics2D.BoxCast(_coll.bounds.center, _coll.bounds.size, 0, Vector2.down, .2f, groundLayer);
-        return hit.collider != null;
     }
 
     private Vector2 GetMouseRelativePosition() {
